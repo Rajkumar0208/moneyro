@@ -1,0 +1,3 @@
+moneyro/subprojects/*
+!moneyro/subprojects/*.wrap
+moneyro/build/
