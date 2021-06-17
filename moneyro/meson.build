@@ -31,12 +31,13 @@ executable('moneyro', sources, include_directories: [fltk_inc, moneyro_inc], dep
 
 test_dir = 'src/tests/'
 tests = [
-  {'name': 'payment_collection', 'sources': [], 'includes': [], 'flags': []}
+  {'name': 'payment_collection', 'sources': ['src/core/PaymentCollection.cpp', 'src/core/Payment.cpp'], 'includes': [], 'flags': []},
+  {'name': 'datetime', 'sources': ['src/lib/DateTime.cpp'], 'includes': [], 'flags': []}
+
 ]
 
 foreach t : tests
   test_source = test_dir + t['name'] + '.cpp'
-  #TODO move specific tests to array above
-  exe = executable(t['name'], [test_source, 'src/core/PaymentCollection.cpp', 'src/core/Payment.cpp'], dependencies: [gtest_dep], include_directories: [moneyro_inc], cpp_args: t['flags'])
+  exe = executable('tests/' + t['name'], [test_source] + t['sources'], dependencies: [gtest_dep], include_directories: [moneyro_inc], cpp_args: t['flags'])
   test(t['name'], exe)
 endforeach
