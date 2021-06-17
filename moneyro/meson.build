@@ -25,18 +25,18 @@ sources = [
   'src/components/PaymentList.cpp'
   ]
 
-
 executable('moneyro', sources, include_directories: [fltk_inc, moneyro_inc], dependencies: [fltk_lib])
 
-tests = [
-  {'name': 'payment_collection', 'sources': [], 'includes': []}
-]
+# Tests
 
 test_dir = 'src/tests/'
+tests = [
+  {'name': 'payment_collection', 'sources': [], 'includes': [], 'flags': []}
+]
+
 foreach t : tests
   test_source = test_dir + t['name'] + '.cpp'
-  exe = executable(t['name'], [test_source], dependencies: [gtest_dep])
+  #TODO move specific tests to array above
+  exe = executable(t['name'], [test_source, 'src/core/PaymentCollection.cpp', 'src/core/Payment.cpp'], dependencies: [gtest_dep], include_directories: [moneyro_inc], cpp_args: t['flags'])
   test(t['name'], exe)
 endforeach
-
-

@@ -1,11 +1,11 @@
 #include "components/PaymentList.hpp"
 
 namespace Moneyro {
-  PaymentList::PaymentList(int x, int y, int w, int h, const char *name=0, std::shared_ptr<std::vector<Payment>> payments = nullptr): Fl_Table(x,y,w,h,name){
+  PaymentList::PaymentList(int x, int y, int w, int h, const char *name=0, PaymentCollection* payments = nullptr): Fl_Table(x,y,w,h,name){
     columnHeaders = { "Valor", "Carteira", "Data" };
     this->setPayments(payments);
 
-    rows(this->payments.get()->size() + 1);
+    rows(this->payments->getPayments().size() + 1);
     row_height_all(20);
     row_resize(0);
 
@@ -16,23 +16,9 @@ namespace Moneyro {
     end();
   };
 
-  void PaymentList::setPayments(std::shared_ptr<std::vector<Payment>> payments) {
+  void PaymentList::setPayments(PaymentCollection* payments) {
     this->payments = payments;
-    this->calculateTotal();
   }
-
-  void PaymentList::calculateTotal() {
-    this->total = 0;
-    if(this->payments){
-      std::vector<Payment> payments = *this->payments.get();
-      for(auto  i : payments){
-        this->total += i.getValue();
-      }
-    } else {
-      this->total = 0;
-    }
-  }
-
 
   //TODO filter by name
 
@@ -45,8 +31,8 @@ namespace Moneyro {
         DrawHeader(COL < static_cast<int>(columnHeaders.size()) ? columnHeaders[COL].c_str() : "",X,Y,W,H);
         return;
       case CONTEXT_CELL:
-        if(ROW < static_cast<int>(this->payments.get()->size())) {
-          Payment payment = this->payments.get()->at(ROW);
+        if(ROW < static_cast<int>(this->payments->getPayments().size())) {
+          Payment payment = this->payments->getPayments().at(ROW);
           switch(COL) {
             case 0:
               DrawData(std::to_string(payment.getValue()),X,Y,W,H);
@@ -60,7 +46,7 @@ namespace Moneyro {
           }
         } else {
           if(COL == 0){
-            DrawData(std::to_string(this->total),X,Y,W,H);
+            DrawData(std::to_string(payments->getTotal()),X,Y,W,H);
           }
 
         }

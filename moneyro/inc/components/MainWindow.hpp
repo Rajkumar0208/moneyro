@@ -14,13 +14,14 @@
 #include "core/Profile.hpp"
 #include "core/Account.hpp"
 #include "components/PaymentList.hpp"
+#include "core/PaymentCollection.hpp"
 
 namespace Moneyro {
     class MainWindow: public Fl_Window {
       private:
         std::unique_ptr<PaymentList> paymentList;
-        std::shared_ptr<std::vector<Account>> accounts;
-        std::shared_ptr<std::vector<Payment>> payments;
+        std::vector<Account> accounts;
+        PaymentCollection payments;
       public:
         MainWindow();
         Profile profile;

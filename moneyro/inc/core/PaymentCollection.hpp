@@ -10,10 +10,18 @@
 
 namespace Moneyro {
   class PaymentCollection {
+    public:
+      PaymentCollection();
+      void add(Payment newPayment);
+      void add(std::vector<Payment> newPayment);
+      const std::vector<Payment>& getPayments();
+      long double getTotal();
+    private:
+      void calculateTotal();
+      long double total;
       std::vector<Payment> payments;
+
   };
 }
-
-
 
 #endif //MONEYRO_PAYMENT_COLLECTION_INCLUDED

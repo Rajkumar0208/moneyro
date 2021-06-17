@@ -15,17 +15,16 @@
 #include "FL/fl_draw.H"
 
 #include "core/Payment.hpp"
+#include "core/PaymentCollection.hpp"
 
 namespace Moneyro {
   class PaymentList: Fl_Table {
     private:
-      long double total;
       std::vector<std::string> columnHeaders;
-      std::shared_ptr<std::vector<Payment>> payments;
-      void calculateTotal();
+      PaymentCollection* payments;
     public:
-      void setPayments(std::shared_ptr<std::vector<Payment>> payments);
-      PaymentList(int x, int y, int w, int h, const char *name, std::shared_ptr<std::vector<Payment>> payments);
+      void setPayments(PaymentCollection* payments);
+      PaymentList(int x, int y, int w, int h, const char *name, PaymentCollection* payments);
       void draw_cell(TableContext context, int ROW, int COL, int X, int Y, int W, int H);
       void DrawData(std::string s, int X, int Y, int W, int H);
       void DrawHeader(const char *s, int X, int Y, int W, int H);

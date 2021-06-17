@@ -9,16 +9,21 @@ namespace Moneyro {
     this->source = source;
     this->destination = destination;
   };
+
   long double Payment::getValue() {
     return this->value;
   }
 
   Account* Payment::getSource() {
-    return this->source;
+    return source;
   }
 
   Account* Payment::getDestination() {
-    return this->destination;
+    return destination;
+  }
+
+  void Payment::setValue(long double newValue) {
+    value = newValue;
   }
 }
 
