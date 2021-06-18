@@ -2,19 +2,35 @@
 #include "lib/DateTime.hpp"
 
 
-//TODO temp
 #include <string>
 
-TEST(DateTime, DateTimeInitializationFormat) {
-  Moneyro::DateTime dt;
-  const char* format = "%F %T.";
-  std::cout << dt.format(format) << std::endl;
+TEST(DateTime, DateTimeInitYearMonthDayHoursMinutesSecondsParamsA) {
+  std::string outputFormat = "%F %T";
+
+  Moneyro::DateTime dt("2020-02-01", "%Y-%m-%d");
+  EXPECT_EQ(dt.format(outputFormat), "2020-02-01 00:00:00");
+
+  //Test invalid values
+  Moneyro::DateTime dtA("2020-02-00", "%Y-%m-%d");
+  EXPECT_EQ(dtA.format(outputFormat), "2020-01-31 00:00:00");
 }
 
-TEST(DateTime, DateTimeInitializationFormatString) {
-  Moneyro::DateTime dt;
-  std::string format = "%F %T.";
-  std::cout << dt.format(format) << std::endl;
+TEST(DateTime, DateTimeSum) {
+  std::string outputFormat = "%F %T";
+  Moneyro::DateTime dt("2020-02-01", "%Y-%m-%d");
+
+  dt.sum(std::chrono::hours(1));
+  EXPECT_EQ(dt.format(outputFormat), "2020-02-01 01:00:00");
+
+
+  dt.sum(std::chrono::hours(24));
+  EXPECT_EQ(dt.format(outputFormat), "2020-02-02 01:00:00");
+
+  dt.sum(std::chrono::minutes(32));
+  EXPECT_EQ(dt.format(outputFormat), "2020-02-02 01:32:00");
+
+  dt.sum(std::chrono::minutes(-32));
+  EXPECT_EQ(dt.format(outputFormat), "2020-02-02 01:00:00");
 }
 
 int main(int argc, char **argv) {

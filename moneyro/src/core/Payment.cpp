@@ -4,7 +4,7 @@
 #include "core/Payment.hpp"
 
 namespace Moneyro {
-  Payment::Payment(double long value, Account* source, Account* destination) {
+  Payment::Payment(double long value, Account* destination, Account* source, DateTime issueDate) {
     this->value = value;
     this->source = source;
     this->destination = destination;
@@ -24,6 +24,10 @@ namespace Moneyro {
 
   void Payment::setValue(long double newValue) {
     value = newValue;
+  }
+
+  DateTime Payment::getIssueDate() {
+    return issueDate;
   }
 }
 

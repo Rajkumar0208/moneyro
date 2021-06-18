@@ -19,12 +19,15 @@
 
 namespace Moneyro {
   class PaymentList: Fl_Table {
-    private:
-      std::vector<std::string> columnHeaders;
-      PaymentCollection* payments;
     public:
       void setPayments(PaymentCollection* payments);
       PaymentList(int x, int y, int w, int h, const char *name, PaymentCollection* payments);
+      void addPayment(Payment payment);
+      //TODO
+      //void removePayment(Payament payment);
+    private:
+      std::vector<std::string> columnHeaders;
+      PaymentCollection* payments;
       void draw_cell(TableContext context, int ROW, int COL, int X, int Y, int W, int H);
       void DrawData(std::string s, int X, int Y, int W, int H);
       void DrawHeader(const char *s, int X, int Y, int W, int H);

@@ -14,6 +14,8 @@ namespace Moneyro {
       PaymentCollection();
       void add(Payment newPayment);
       void add(std::vector<Payment> newPayment);
+      //TODO remove index;
+      //TODO remove by reference;
       const std::vector<Payment>& getPayments();
       long double getTotal();
     private:

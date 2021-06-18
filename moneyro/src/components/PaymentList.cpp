@@ -1,11 +1,10 @@
 #include "components/PaymentList.hpp"
 
 namespace Moneyro {
-  PaymentList::PaymentList(int x, int y, int w, int h, const char *name=0, PaymentCollection* payments = nullptr): Fl_Table(x,y,w,h,name){
-    columnHeaders = { "Valor", "Carteira", "Data" };
+  PaymentList::PaymentList(int x, int y, int w, int h, const char *name= 0, PaymentCollection* payments = nullptr): Fl_Table(x,y,w,h,0){
+    columnHeaders = { "Valor", "Carteira", "Data", "Issue Date" };
     this->setPayments(payments);
 
-    rows(this->payments->getPayments().size() + 1);
     row_height_all(20);
     row_resize(0);
 
@@ -18,6 +17,12 @@ namespace Moneyro {
 
   void PaymentList::setPayments(PaymentCollection* payments) {
     this->payments = payments;
+    rows(this->payments->getPayments().size() + 1);
+  }
+
+  void PaymentList::addPayment(Payment payment) {
+    this->payments->add(payment);
+    rows(this->payments->getPayments().size() + 1);
   }
 
   //TODO filter by name
@@ -43,6 +48,9 @@ namespace Moneyro {
             case 2:
               DrawData(payment.getDestination()->getName(),X,Y,W,H);
               break;
+            case 3:
+              DrawData(payment.getIssueDate().format("%F"),X,Y,W,H);
+              break;
           }
         } else {
           if(COL == 0){
@@ -59,16 +67,16 @@ namespace Moneyro {
   void PaymentList::DrawData(std::string s, int X, int Y, int W, int H) {
     fl_push_clip(X,Y,W,H);
     fl_color(FL_WHITE); fl_rectf(X,Y,W,H);
-    fl_color(FL_GRAY0); fl_draw(s.c_str(), X,Y,W,H, FL_ALIGN_CENTER);
+    fl_color(FL_GRAY0); fl_draw(s.c_str(), X,Y,W,H, FL_ALIGN_LEFT);
     //fl_color(color()); fl_rect(X,Y,W,H);
     fl_pop_clip();
   }
 
   void PaymentList::DrawHeader(const char *s, int X, int Y, int W, int H) {
     fl_push_clip(X,Y,W,H);
+    fl_color(FL_GRAY); fl_rectf(X,Y,W,H);
     //fl_draw_box(FL_THIN_UP_BOX, X,Y,W,H, row_header_color());
-    fl_color(FL_BLACK);
-    fl_draw(s, X,Y,W,H, FL_ALIGN_CENTER);
+    fl_color(FL_BLACK); fl_draw(s, X,Y,W,H, FL_ALIGN_LEFT);
     fl_pop_clip();
   }
 }

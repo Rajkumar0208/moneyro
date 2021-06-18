@@ -31,7 +31,7 @@ executable('moneyro', sources, include_directories: [fltk_inc, moneyro_inc], dep
 
 test_dir = 'src/tests/'
 tests = [
-  {'name': 'payment_collection', 'sources': ['src/core/PaymentCollection.cpp', 'src/core/Payment.cpp'], 'includes': [], 'flags': []},
+  {'name': 'payment_collection', 'sources': ['src/core/PaymentCollection.cpp', 'src/core/Payment.cpp', 'src/lib/DateTime.cpp'], 'includes': [], 'flags': []},
   {'name': 'datetime', 'sources': ['src/lib/DateTime.cpp'], 'includes': [], 'flags': []}
 
 ]
