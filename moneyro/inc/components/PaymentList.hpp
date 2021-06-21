@@ -18,13 +18,12 @@
 #include "core/PaymentCollection.hpp"
 
 namespace Moneyro {
-  class PaymentList: Fl_Table {
+  class PaymentList: public Fl_Table {
     public:
       void setPayments(PaymentCollection* payments);
       PaymentList(int x, int y, int w, int h, const char *name, PaymentCollection* payments);
       void addPayment(Payment payment);
-      //TODO
-      //void removePayment(Payament payment);
+      //TODO void removePayment(Payament payment);
     private:
       std::vector<std::string> columnHeaders;
       PaymentCollection* payments;
