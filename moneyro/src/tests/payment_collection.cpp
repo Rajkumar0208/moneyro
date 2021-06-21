@@ -1,6 +1,7 @@
 #include "gtest/gtest.h"
 #include "core/PaymentCollection.hpp"
 #include "core/Payment.hpp"
+#include "core/Account.hpp"
 
 namespace {
   class PaymentCollectionTest : public ::testing::Test {
@@ -21,9 +22,10 @@ namespace {
 
   TEST_F(PaymentCollectionTest, PaymentCollectionSum) {
     Moneyro::PaymentCollection paymentCollection;
-    Moneyro::Payment paymentA(1.0);
-    Moneyro::Payment paymentB(5.0);
-    Moneyro::Payment paymentC(10.0);
+    Moneyro::Account account;
+    Moneyro::Payment paymentA(1.0, &account);
+    Moneyro::Payment paymentB(5.0, &account);
+    Moneyro::Payment paymentC(10.0, &account);
 
     paymentCollection.add(paymentA);
     paymentCollection.add(paymentB);
@@ -32,8 +34,8 @@ namespace {
 
     EXPECT_EQ(paymentCollection.getTotal(), 16);
 
-    Moneyro::Payment paymentD(5.0);
-    Moneyro::Payment paymentE(10.0);
+    Moneyro::Payment paymentD(5.0, &account);
+    Moneyro::Payment paymentE(10.0, &account);
 
     paymentCollection.add(paymentE);
     paymentCollection.add(paymentD);
@@ -42,19 +44,22 @@ namespace {
   }
 
   TEST_F(PaymentCollectionTest, PaymentCollectionSumMultiple) {
+
+    Moneyro::Account account;
+
     Moneyro::PaymentCollection paymentCollection;
 
-    Moneyro::Payment paymentA(1.0);
-    Moneyro::Payment paymentB(5.0);
-    Moneyro::Payment paymentC(10.0);
+    Moneyro::Payment paymentA(1.0, &account);
+    Moneyro::Payment paymentB(5.0, &account);
+    Moneyro::Payment paymentC(10.0, &account);
     std::vector<Moneyro::Payment> payments = {paymentA, paymentB, paymentC};
 
     paymentCollection.add(payments);
 
     EXPECT_EQ(paymentCollection.getTotal(), 16);
 
-    Moneyro::Payment paymentD(5.0);
-    Moneyro::Payment paymentE(10.0);
+    Moneyro::Payment paymentD(5.0, &account);
+    Moneyro::Payment paymentE(10.0, &account);
 
     std::vector<Moneyro::Payment> morePayments = { paymentD, paymentE };
     paymentCollection.add(morePayments);

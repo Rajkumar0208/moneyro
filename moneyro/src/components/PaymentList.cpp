@@ -2,15 +2,17 @@
 
 namespace Moneyro {
   PaymentList::PaymentList(int x, int y, int w, int h, const char *name= 0, PaymentCollection* payments = nullptr): Fl_Table(x,y,w,h,0){
-    columnHeaders = { "Valor", "Carteira", "Data", "Issue Date" };
+    box(FL_NO_BOX);
+    columnHeaders = { "Valor", "Conta", "Issue Date" };
+    cols(columnHeaders.size()+1);
+    col_width_all(300);
+
     this->setPayments(payments);
 
     row_height_all(20);
     row_resize(0);
 
-    cols(columnHeaders.size());
     col_header(1);
-    col_width_all(80);
     col_resize(1);
     end();
   };
@@ -43,18 +45,22 @@ namespace Moneyro {
               DrawData(std::to_string(payment.getValue()),X,Y,W,H);
               break;
             case 1:
-              DrawData(payment.getSource()->getName(),X,Y,W,H);
+              DrawData(payment.getAccount()->getName(),X,Y,W,H);
               break;
             case 2:
-              DrawData(payment.getDestination()->getName(),X,Y,W,H);
-              break;
-            case 3:
               DrawData(payment.getIssueDate().format("%F"),X,Y,W,H);
               break;
           }
         } else {
           if(COL == 0){
-            DrawData(std::to_string(payments->getTotal()),X,Y,W,H);
+            DrawData("Total: " + std::to_string(payments->getTotal()),X,Y,W,H);
+          } else {
+            fl_push_clip(X,Y,W,H);
+            fl_color(FL_WHITE); fl_rectf(X,Y,W,H);
+            //fl_color(FL_GRAY0); fl_draw(s.c_str(), X,Y,W,H, FL_ALIGN_LEFT);
+            //fl_color(color()); fl_rect(X,Y,W,H);
+            fl_pop_clip();
+
           }
 
         }

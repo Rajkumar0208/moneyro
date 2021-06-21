@@ -4,23 +4,23 @@
 #include "core/Payment.hpp"
 
 namespace Moneyro {
-  Payment::Payment(double long value, Account* destination, Account* source, DateTime issueDate) {
+  Payment::Payment(double long value, Account* account, DateTime issueDate) { //: Database::Model<Payment>(Database::Database::getDatabase()){
     this->value = value;
-    this->source = source;
-    this->destination = destination;
+    this->account = account;
   };
 
   long double Payment::getValue() {
     return this->value;
   }
 
-  Account* Payment::getSource() {
-    return source;
+  Account* Payment::getAccount() {
+    return account;
   }
 
-  Account* Payment::getDestination() {
-    return destination;
+  void Payment::save() {
+    //TODO
   }
+
 
   void Payment::setValue(long double newValue) {
     value = newValue;

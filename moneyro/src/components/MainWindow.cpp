@@ -1,45 +1,75 @@
 #include "components/MainWindow.hpp"
 
+
 namespace Moneyro {
-  MainWindow::MainWindow() : Fl_Window(640, 800) {
-
-
+  MainWindow::MainWindow() : Fl_Window(640, 800, "Moneyro") {
     begin();
-    paymentLabel = std::make_unique<Fl_Input>(x(), y(), 80, 30, "");
-    addButton = std::make_unique<Fl_Button>(x()+80, y(), 160, 30, " Add");
 
-    //group.resizable(0);
-    //group.begin();
+    Fl_Group* leftPanel = new Fl_Group(10,10,250,h());
+    {
+      tabs = std::make_unique<Fl_Tabs>(10,10,250,250);
+      {
+        transactionTab =  std::make_unique<Fl_Group>(20,30,245,250, "Transação");
+        {
+          paymentLabel = std::make_unique<Fl_Input>(20, 40 , 80, 30, "");
+          accountChoice = std::make_unique<Fl_Choice>(100, 40, 150, 30);
+          addButton = std::make_unique<Fl_Button>(20, 70, 160, 30, " Add");
+        }
+        transactionTab->resizable(0);
+        transactionTab->end();
+      }
+      tabs->resizable(0);
+      tabs->end();
+
+      Fl_Group* empty = new Fl_Group(10,250,250,h());
+      leftPanel->resizable(empty);
+    }
+    leftPanel->end();
+
 
     accounts = std::vector<Account>();
     accounts.push_back(Account("Conta 1"));
     accounts.push_back(Account("Conta 2"));
 
+    for(auto account : accounts) {
+      accountChoice->add(account.getName().c_str(), 0, [](Fl_Widget *w, void *u){
+          MainWindow* window = reinterpret_cast<MainWindow*>(u);
+          Fl_Choice* accountChoice = reinterpret_cast<Fl_Choice*>(w);
+
+          window->selectedAccount = &(window->accounts.at(accountChoice->value()));
+
+          }, this);
+    };
 
     payments = PaymentCollection();
 
-    addButton.get()->callback([](Fl_Widget *w, void *u ){
+    testCallback = [this](){
+      std::string inputValue = paymentLabel.get()->value();
 
-        MainWindow* window = reinterpret_cast<MainWindow*>(u);
+      try {
+        if(selectedAccount) {
+          paymentList.get()->addPayment((Payment(std::stol(inputValue), selectedAccount)));
+        }
+      } catch(const std::exception&) {
 
-          std::string inputValue = window->paymentLabel.get()->value();
-          try {
-            window->paymentList.get()->addPayment((Payment(std::stol(inputValue), &(window->accounts.at(0)) ,  &(window->accounts.at(1)) )));
-          } catch(const std::exception&) {
+      }
+      paymentLabel->value(0);
 
-          }
-          window->paymentLabel->value(0);
+    };
 
 
-          std::cout << window->payments.getTotal() << std::endl;
+    sFLTK::safeCallbackHandler(addButton.get(), &testCallback);
 
-        }, this);
+    paymentList = std::make_unique<PaymentList>(x()+270, y()+10, w(), h()-30, "Contas", &payments);
+    paymentList->end();
 
-    paymentList = std::make_unique<PaymentList>(x(), y()+30, w(), h()-30, "Contas", &payments);
-
-    //group.end();
+    resizable(*(paymentList.get()));
     end();
     show();
   }
 
 }
+
+
+
+

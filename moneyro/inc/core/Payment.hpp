@@ -4,9 +4,10 @@
 #include "core/Account.hpp"
 #include "core/Category.hpp"
 #include "lib/DateTime.hpp"
+//#include "database/Model.hpp"
 
 namespace Moneyro {
-  class Payment {
+  class Payment { //: public Database::Model<Payment> {
     private:
       long double value;
       Account* account; //TODO ptr
@@ -15,6 +16,8 @@ namespace Moneyro {
       //Issue Date
       //Due Date
     public:
+      void save();
+      Payment all();
       Payment(long double value, Account* account, DateTime issueDate = DateTime());
       long double getValue();
       //TODO exceptions when pointer is emtpy
