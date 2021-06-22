@@ -6,16 +6,19 @@
 
 #include "core/Payment.hpp"
 #include "core/Account.hpp"
+#include "lib/database/Database.hpp"
 
 namespace Moneyro {
   class Profile {
     private:
       std::vector<Account> accounts;
       std::vector<Payment> payments;
+      Database::Database database;
     public:
-      Profile();
+      Profile(std::string filename);
       std::vector<Account> getAccounts();
       std::vector<Payment> getPayments();
+
   };
 }
 #endif //MONEYRO_PROFILE_INCLUDED

@@ -3,19 +3,21 @@
 
 #include "sqlite3.h"
 #include <memory>
+#include <string>
+
+//TODO remove iostream
+#include<iostream>
+
 
 namespace Moneyro {
   namespace Database {
     class Database {
       private:
-        //std::unique_ptr<sqlite3> db;
-        //static std::unique_ptr<Database> instance;
-        inline static Database* instance;
-        Database();
+        sqlite3 *db;
+        int rc;
       public:
-        static Database* getDatabase();
-        static void teste();
-
+        Database(std::string filename);
+        ~Database();
     };
   }
 

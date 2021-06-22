@@ -49,7 +49,7 @@ namespace Moneyro {
       public:
         //static void safeCallback(Fl_Widget *w, void *u);
         MainWindow();
-        Profile profile;
+        Profile* profile;
     };
 }
 

@@ -4,7 +4,7 @@
 #include "core/Payment.hpp"
 
 namespace Moneyro {
-  Payment::Payment(double long value, Account* account, DateTime issueDate) { //: Database::Model<Payment>(Database::Database::getDatabase()){
+  Payment::Payment(double long value, Account* account, DateTime issueDate) {
     this->value = value;
     this->account = account;
   };
@@ -15,10 +15,6 @@ namespace Moneyro {
 
   Account* Payment::getAccount() {
     return account;
-  }
-
-  void Payment::save() {
-    //TODO
   }
 
 
