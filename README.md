@@ -1,16 +1,16 @@
-## TODO
 
-### Maximum priority
+# Moneyro
 
-  - CRUD account
-  - categories section
-  - account sections with totals(add filter)
-  - create profile constructor
+Moneyro is still in very very alpha development and for now is not functional yet.
 
-### Minor bug
+## Milestones
 
-  - buttons and inputs resizing
+  - [] Charts
+  - [] Sqlite Support
+  - [] CRUD Profile
+  - [] categories section
+  - [] account sections with totals(add filter)
 
 ### Minimum priority
-  - create a docker-compose.yml
+  - create a docker infrastructure to compile
 
