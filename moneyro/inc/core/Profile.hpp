@@ -3,21 +3,34 @@
 
 #include <vector>
 #include <string>
+#include <memory>
+
+#include "fmt/core.h"
 
 #include "core/Payment.hpp"
+#include "core/PaymentCollection.hpp"
 #include "core/Account.hpp"
 #include "lib/database/Database.hpp"
 
 namespace Moneyro {
   class Profile {
     private:
+      std::unique_ptr<Database::Database> database;
       std::vector<Account> accounts;
-      std::vector<Payment> payments;
-      Database::Database database;
+      PaymentCollection payments;
+      void fetchAccounts();
+      void fetchPayments();
+      void fetchAll();
+      void saveAccounts();
+      void savePayments();
     public:
       Profile(std::string filename);
-      std::vector<Account> getAccounts();
-      std::vector<Payment> getPayments();
+      Profile();//TODO new profile
+      void saveAll();
+      std::vector<Account>* getAccounts();
+      PaymentCollection* getPayments();
+      Account* getAccountById(unsigned int id);
+
 
   };
 }

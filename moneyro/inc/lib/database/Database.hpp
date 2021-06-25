@@ -4,6 +4,8 @@
 #include "sqlite3.h"
 #include <memory>
 #include <string>
+#include <map>
+#include <functional>
 
 //TODO remove iostream
 #include<iostream>
@@ -14,8 +16,11 @@ namespace Moneyro {
     class Database {
       private:
         sqlite3 *db;
+        std::string filename;
         int rc;
+        static int callbackHandler(void *data, int argc, char **argv, char **azColName);
       public:
+        std::vector<std::map<std::string, std::string>> query(std::string sql);
         Database(std::string filename);
         ~Database();
     };

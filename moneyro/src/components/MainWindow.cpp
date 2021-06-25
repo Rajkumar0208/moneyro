@@ -2,18 +2,38 @@
 
 
 namespace Moneyro {
-  MainWindow::MainWindow() : Fl_Window(640, 800, "Moneyro") {
+  MainWindow::MainWindow() : Fl_Double_Window(640, 800, "Moneyro") {
     begin();
 
-    Fl_Group* leftPanel = new Fl_Group(10,10,250,h());
+    profile = std::make_unique<Profile>();
+
+    menuBar = std::make_unique<Fl_Menu_Bar>(0,0,w(),30);
     {
-      tabs = std::make_unique<Fl_Tabs>(10,10,250,250);
+      menuBar->box(FL_ENGRAVED_BOX);
+
+      menuBar->add("File/Save", FL_CTRL+'s', [](Fl_Widget* w, void* u){
+          MainWindow* mainWindow = static_cast<MainWindow*>(u);
+          mainWindow->profile->saveAll();
+
+          },this);
+
+      menuBar->add("File/Load", FL_CTRL+'o', [](Fl_Widget* w, void* u){
+            MainWindow* mainWindow = static_cast<MainWindow*>(u);
+            mainWindow->openProfile(false);
+          }, this);
+    }
+
+    leftPanel = std::make_unique<Fl_Group>(10,menuBar->h()+10,250,h());
+    {
+      tabs = std::make_unique<Fl_Tabs>(leftPanel->x(),leftPanel->y(),250,250);
       {
-        transactionTab =  std::make_unique<Fl_Group>(20,30,245,250, "Transação");
+        transactionTab =  std::make_unique<Fl_Group>(tabs->x()+10,tabs->y()+20,245,250, "Transação");
         {
-          paymentLabel = std::make_unique<Fl_Input>(20, 40 , 80, 30, "");
-          accountChoice = std::make_unique<Fl_Choice>(100, 40, 150, 30);
-          addButton = std::make_unique<Fl_Button>(20, 70, 160, 30, " Add");
+          paymentLabel = std::make_unique<Fl_Input>(transactionTab->x(), tabs->y()+30, 80, 30, "");
+          accountChoice = std::make_unique<Fl_Choice>(paymentLabel->x()+paymentLabel->w()+10, tabs->y()+30, 140, 30);
+          int addButtonWidth = 100;
+          addButton = std::make_unique<Fl_Button>(transactionTab->h() - addButtonWidth, accountChoice->y()+accountChoice->h()+10, addButtonWidth, 30, "Add");
+          addButton->shortcut(FL_Enter);
         }
         transactionTab->resizable(0);
         transactionTab->end();
@@ -21,34 +41,20 @@ namespace Moneyro {
       tabs->resizable(0);
       tabs->end();
 
-      Fl_Group* empty = new Fl_Group(10,250,250,h());
-      leftPanel->resizable(empty);
+      //TODO replace empty for charts later
+      empty = std::make_unique<Fl_Group>(10,leftPanel->h(),250,h());
+      leftPanel->resizable(empty.get());
     }
     leftPanel->end();
 
 
-    accounts = std::vector<Account>();
-    accounts.push_back(Account("Conta 1"));
-    accounts.push_back(Account("Conta 2"));
-
-    for(auto account : accounts) {
-      accountChoice->add(account.getName().c_str(), 0, [](Fl_Widget *w, void *u){
-          MainWindow* window = reinterpret_cast<MainWindow*>(u);
-          Fl_Choice* accountChoice = reinterpret_cast<Fl_Choice*>(w);
-
-          window->selectedAccount = &(window->accounts.at(accountChoice->value()));
-
-          }, this);
-    };
-
-    payments = PaymentCollection();
 
     testCallback = [this](){
       std::string inputValue = paymentLabel.get()->value();
 
       try {
         if(selectedAccount) {
-          paymentList.get()->addPayment((Payment(std::stol(inputValue), selectedAccount)));
+          paymentList->addPayment((Payment(std::stol(inputValue), selectedAccount)));
         }
       } catch(const std::exception&) {
 
@@ -57,16 +63,47 @@ namespace Moneyro {
 
     };
 
-
     sFLTK::safeCallbackHandler(addButton.get(), &testCallback);
 
-    paymentList = std::make_unique<PaymentList>(x()+270, y()+10, w(), h()-30, "Contas", &payments);
-    paymentList->end();
+    paymentList = std::make_unique<PaymentList>(x()+270, menuBar->h()+10, 360, h()-60, "Contas", nullptr);
+
+
+    
 
     resizable(*(paymentList.get()));
     end();
+
+    Fl::visual(FL_DOUBLE|FL_INDEX);
     show();
+    openProfile(true);
   }
+
+  void MainWindow::openProfile(bool newProfile){
+    if(newProfile){
+      profile = std::make_unique<Profile>();
+    } else {
+      std::string filename = fl_file_chooser("Teste", "*.db", "test.db", 0 );
+      profile = std::make_unique<Profile>(filename);
+    }
+
+    paymentList->setPayments(profile->getPayments());
+
+    accountChoice->clear();
+    selectedAccount = nullptr;
+
+    for(auto account : *(profile->getAccounts())) {
+      accountChoice->add(account.name().c_str(), 0, [](Fl_Widget *w, void *u){
+          MainWindow* window = static_cast<MainWindow*>(u);
+          Fl_Choice* accountChoice = static_cast<Fl_Choice*>(w);
+
+          window->selectedAccount = &(window->profile->getAccounts()->at(accountChoice->value()));
+
+          }, this);
+    };
+
+    accountChoice->redraw();
+  }
+
 
 }
 

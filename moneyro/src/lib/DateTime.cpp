@@ -2,6 +2,7 @@
 
 namespace Moneyro {
 
+  //TODO Date operations > < == 
   DateTime::DateTime(TimePoint timepoint) {
     this->timepoint = timepoint;
   }

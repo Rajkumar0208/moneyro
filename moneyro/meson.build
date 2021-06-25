@@ -14,7 +14,10 @@ sqlite3_dep = sqlite3_subproj.get_variable('sqlite3_dep')
 gtest_subproj = subproject('gtest')
 gtest_dep = gtest_subproj.get_variable('gtest_dep')
 
-sources = [
+fmt_subproj = subproject('fmt')
+fmt_dep = fmt_subproj.get_variable('fmt_dep')
+
+sources = files(
   'src/main.cpp',
   'src/lib/database/Database.cpp',
   'src/lib/DateTime.cpp',
@@ -25,9 +28,23 @@ sources = [
   'src/core/PaymentCollection.cpp',
   'src/components/MainWindow.cpp',
   'src/components/PaymentList.cpp'
-  ]
+  )
 
-executable('moneyro', sources, include_directories: [moneyro_inc], dependencies: [fltk_dep, sqlite3_dep], cpp_args:'-lpthread -fsanitize=address -g')
+clang_tidy = find_program('clang-tidy')
+
+#TODO see if this is working
+if clang_tidy.found()
+  run_target(
+    'tidy',
+    command: [
+      clang_tidy,
+      '--checks=cppcoreguidelines-*',
+      'p', meson.build_root()
+      ] + sources
+    )
+endif
+
+executable('moneyro', sources, include_directories: [moneyro_inc], dependencies: [fltk_dep, sqlite3_dep, fmt_dep], cpp_args:['-g', '-Wall', '-Wuninitialized', '-DUSE_PL=1'])
 
 
 # Tests
