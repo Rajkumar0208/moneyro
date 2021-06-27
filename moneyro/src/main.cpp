@@ -3,15 +3,12 @@
 
 #include "FL/Fl.h"
 
-#define PL_IMPLEMENTATION 1
-#include "palanteer.h"
 
 
 #include "components/MainWindow.hpp"
 
 int main(){
 
-  plInitAndStart("Moneyro");
 
   try {
 
@@ -22,6 +19,5 @@ int main(){
   } catch(...) {
   }
 
-  plStopAndUninit();
 
 }

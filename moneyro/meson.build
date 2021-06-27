@@ -43,7 +43,7 @@ if clang_tidy.found()
     )
 endif
 
-executable('moneyro', sources, include_directories: [moneyro_inc], dependencies: [fltk_dep, sqlite3_dep, fmt_dep], cpp_args:['-g', '-Wall', '-Wuninitialized', '-DUSE_PL=1'])
+executable('moneyro', sources, include_directories: [moneyro_inc], dependencies: [fltk_dep, sqlite3_dep, fmt_dep], cpp_args:['-g', '-Wall'])
 
 
 # Tests
