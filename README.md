@@ -6,7 +6,7 @@ Moneyro is still in very very alpha development and for now is not functional ye
 ## Milestones
 
   - [] Charts
-  - [] Sqlite Support
+  - [] JSON file save
   - [] CRUD Profile
   - [] categories section
   - [] account sections with totals(add filter)
