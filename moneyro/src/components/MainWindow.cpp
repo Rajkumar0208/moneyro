@@ -13,7 +13,12 @@ namespace Moneyro {
 
       menuBar->add("File/Save", FL_CTRL+'s', [](Fl_Widget* w, void* u){
           MainWindow* mainWindow = static_cast<MainWindow*>(u);
-          mainWindow->profile->saveAll();
+
+          //if(window->profile.filename())
+          //  mainWindow->profile->saveAll(mainWindow->profile.filename());
+          ////else
+          //TODO Request filename here
+
 
           },this);
 

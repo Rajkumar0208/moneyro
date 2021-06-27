@@ -48,7 +48,8 @@ endif
 test_dir = 'src/tests/'
 tests = [
   {'name': 'payment_collection', 'sources': ['src/core/PaymentCollection.cpp', 'src/core/Payment.cpp', 'src/lib/DateTime.cpp', 'src/core/Account.cpp'], 'includes': [], 'flags': []},
-  {'name': 'datetime', 'sources': ['src/lib/DateTime.cpp'], 'includes': [], 'flags': []}
+  {'name': 'datetime', 'sources': ['src/lib/DateTime.cpp'], 'includes': [], 'flags': []},
+  {'name': 'profile', 'sources': ['src/core/Profile.cpp', 'src/core/Account.cpp', 'src/core/Payment.cpp','src/core/PaymentCollection.cpp', 'src/lib/DateTime.cpp'], 'includes': [], 'flags': []}
 ]
 
 foreach t : tests
