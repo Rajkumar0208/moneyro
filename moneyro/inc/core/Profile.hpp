@@ -10,12 +10,10 @@
 #include "core/Payment.hpp"
 #include "core/PaymentCollection.hpp"
 #include "core/Account.hpp"
-#include "lib/database/Database.hpp"
 
 namespace Moneyro {
   class Profile {
     private:
-      std::unique_ptr<Database::Database> database;
       std::vector<Account> accounts;
       PaymentCollection payments;
       void fetchAccounts();

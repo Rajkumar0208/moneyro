@@ -19,7 +19,6 @@ fmt_dep = fmt_subproj.get_variable('fmt_dep')
 
 sources = files(
   'src/main.cpp',
-  'src/lib/database/Database.cpp',
   'src/lib/DateTime.cpp',
   'src/lib/sFLTK.cpp',
   'src/core/Profile.cpp',
@@ -50,7 +49,7 @@ executable('moneyro', sources, include_directories: [moneyro_inc], dependencies:
 # Tests
 test_dir = 'src/tests/'
 tests = [
-  {'name': 'payment_collection', 'sources': ['src/core/PaymentCollection.cpp', 'src/core/Payment.cpp', 'src/lib/DateTime.cpp', 'src/core/Account.cpp', 'src/lib/database/Database.cpp'], 'includes': [], 'flags': []},
+  {'name': 'payment_collection', 'sources': ['src/core/PaymentCollection.cpp', 'src/core/Payment.cpp', 'src/lib/DateTime.cpp', 'src/core/Account.cpp'], 'includes': [], 'flags': []},
   {'name': 'datetime', 'sources': ['src/lib/DateTime.cpp'], 'includes': [], 'flags': []}
 
 ]
